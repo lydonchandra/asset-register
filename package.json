@@ -1,0 +1,23 @@
+{
+  "name": "asset-register",
+  "private": true,
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "start-server-and-test": "^1.13.1",
+    "tsdx": "^0.14.1",
+    "typescript": "^4.3.5",
+    "wsrun": "^5.2.4"
+  },
+  "scripts": {
+    "build": "yarn workspaces run build",
+    "lint": "yarn workspaces run lint",
+    "start": "yarn wsrun start",
+    "test": "yarn workspaces run test",
+    "e2e": "start-test 'cd client; yarn start:ci' http://localhost:3000 'cd server; yarn start:ci' 'http-get://localhost:4000/graphql?query={ __schema { queryType { name } } }'"
+  },
+  "workspaces": [
+    "client"
+  ]
+}
