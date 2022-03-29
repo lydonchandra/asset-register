@@ -13,8 +13,6 @@
     * graphql is used for client <-> server communication 
 * Browse to http://localhost:3000
 
-## Architecture
-
 ![asset-register.gif](asset-register.gif)
 
 ---
