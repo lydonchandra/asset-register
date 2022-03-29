@@ -1,12 +1,16 @@
 # Asset Register
 
 ## How to run
+* Install yarn v1.22.18
+  * https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable
 * Run `yarn install`
 * Run `yarn start`
   * This should start both `client` & `server`
   * `client` at http://localhost:3000
   * `server` at http://localhost:4000/graphql
-* Browse to http://localhost:3000 
+* Browse to http://localhost:3000
+
+![asset-register.gif](asset-register.gif)
 
 ---
 # Front End - Technical Assessment
