@@ -4,34 +4,29 @@ import cors from 'cors';
 import {buildSchema} from "graphql";
 import {Asset} from "./model/asset.js";
 
-
 // Construct a schema, using GraphQL schema language
 const schema = buildSchema(`
-  type Query {
+type Query {
     assets: [Asset]
-  }
+}
 
-  type Mutation {
-    addAsset(
-        name: String!,
-        quantity: Int!,
-        type: String!,  
-    ): Asset    
-  }
+type Mutation {
+    addAsset( name: String!, quantity: Int!, type: String! ): Asset
+    deleteAsset( id: Int! ): Asset   
+}  
 
-  type Asset {
+type Asset {
     id: ID
     name: String!
     quantity: Int!
     type: String!
     createdAt: String!
     updatedAt: String!
-  }
+}
 `);
 const root = {
     assets: async () => {
         const all = await Asset.findAll();
-        console.debug('all', all);
         return all;
     },
 
@@ -41,8 +36,15 @@ const root = {
     {
         const newAsset = { name, quantity, type };
         const created = await Asset.create({ ...newAsset} );
-        console.debug('added asset: ', created);
         return created;
+    },
+
+    deleteAsset: async ( { id } : { id: number } ) => {
+        await Asset.destroy(
+        { where : {id: id} }
+        );
+
+        return id;
     }
 
 };
