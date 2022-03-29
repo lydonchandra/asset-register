@@ -19,3 +19,11 @@ export const AddAssetMutation = `
       } 
   }
 `;
+
+export const DeleteAssetMutation = `
+  mutation DeleteAsset ($id: Int!) {
+      deleteAsset(id: $id) {
+          id
+      } 
+  }
+`;

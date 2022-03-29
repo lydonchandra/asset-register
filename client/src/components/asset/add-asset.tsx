@@ -1,26 +1,23 @@
 import {
-    Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter,
-
-    Box,
+    Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Box,
     Button,
     useDisclosure
 } from "@chakra-ui/react";
 import React from "react";
 import {AddAssetForm} from "./add-asset-form";
 
-export function AddAsset() {
-    const { isOpen, onOpen, onClose } = useDisclosure()
+export function AddAsset(props: {onAdded: any}) {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
     const finalRef = React.useRef() as React.MutableRefObject<HTMLInputElement>;
 
-    const onSaved = () => {
-    }
     return (
-        <Box right={0} >
+        <Box>
             <Button
                 colorScheme={'green'}
                 onClick={onOpen}
             >
-                Add Asset
+                Add New Asset
             </Button>
 
             <Modal finalFocusRef={finalRef}
@@ -29,12 +26,13 @@ export function AddAsset() {
 
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Add Asset</ModalHeader>
+                    <ModalHeader>Add New Asset</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        <AddAssetForm onSaved={onSaved} onCancel={onClose}/>
+                        <AddAssetForm
+                            onAdded={props.onAdded}
+                            onCancel={onClose}/>
                     </ModalBody>
-
 
                 </ModalContent>
             </Modal>

@@ -1,12 +1,10 @@
-import {Button, FormControl, FormErrorMessage, FormLabel, Input, Select} from "@chakra-ui/react";
+import {Button, FormControl, FormErrorMessage, FormLabel, HStack, Input, Select, Spacer} from "@chakra-ui/react";
 import React from "react";
 import {useMutation} from "urql";
-
 import {useForm} from "react-hook-form";
 import {AddAssetMutation} from "./query-mutation";
 
-
-export function AddAssetForm(props: any) {
+export function AddAssetForm(props: { onAdded: any, onCancel: any }) {
     const [, addAssetMut] = useMutation(AddAssetMutation);
 
     const {
@@ -17,13 +15,12 @@ export function AddAssetForm(props: any) {
     } = useForm();
 
     const onSubmit = (data: any) => {
-        console.log(data);
         const newAsset = { ...data };
         newAsset.quantity = parseInt(newAsset.quantity);
         addAssetMut(newAsset)
         .finally(() => {
                 reset();
-                props.onSaved();
+                props.onAdded();
             });
     }
 
@@ -38,22 +35,30 @@ export function AddAssetForm(props: any) {
                 <FormLabel htmlFor={'Name'}>
                     Name
                 </FormLabel>
+
                 <Input
                     {...register("name",
                         {
                             required: 'Name is required',
                             min: 1,
                         }) } />
+                <FormErrorMessage>
+                    {errors.name && errors.name.message}
+                </FormErrorMessage>
 
                 <FormLabel htmlFor={'Quantity'}>
                     Quantity
                 </FormLabel>
                 <Input
+                    type={'number'}
                     {...register("quantity",
                         {
                             required: 'Quantity is required',
                             min: 1,
                         }) } />
+                <FormErrorMessage>
+                    {errors.quantity && errors.quantity.message}
+                </FormErrorMessage>
 
                 <FormLabel htmlFor={'Type'}>
                     Type
@@ -67,22 +72,31 @@ export function AddAssetForm(props: any) {
                     <option value="Other">Other</option>
                 </Select>
 
+                <br/>
                 <FormErrorMessage>
-                    {errors.name && errors.name.message}
+                    {errors.type && errors.type.message}
                 </FormErrorMessage>
             </FormControl>
 
-            <Button mt={4}
-                    colorScheme={'green'}
-                    isLoading={isSubmitting}
-                    type={'submit'}
-            >
-                Save
-            </Button>
+            <HStack mt={4} justifyContent={'right'}>
+                <Button
+                        colorScheme={'green'}
+                        isLoading={isSubmitting}
+                        type={'submit'}
+                        width={100}
+                >
+                    Save
+                </Button>
 
-            <Button mt={4} onClick={onCancel}>
-                Cancel
-            </Button>
+                <Button
+                    onClick={onCancel}
+                >
+                    Cancel
+                </Button>
+
+            </HStack>
+
+
         </form>
     );
 }

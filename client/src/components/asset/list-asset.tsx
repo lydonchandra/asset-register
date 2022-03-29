@@ -1,5 +1,5 @@
-import {useQuery} from "urql";
-import {AssetsQuery} from "./query-mutation";
+import {useMutation, useQuery} from "urql";
+import {AssetsQuery, DeleteAssetMutation} from "./query-mutation";
 import {
     Button,
     Table,
@@ -11,20 +11,31 @@ import {
     Tr
 } from "@chakra-ui/react";
 import {AddAsset} from "./add-asset";
+import {format, parse, parseISO} from 'date-fns'
+
+function formatToAwst(dt: string): string {
+    const parsed = parse(dt, 'yyyy-MM-dd HH:mm:ss.SSS XXX', new Date());
+    const formatted = format(parsed, 'dd-MM-yyyy HH:mm:ss');
+    return formatted
+}
 
 export function ListAsset() {
-    const [result] = useQuery({
+    const [result, reexecuteQuery] = useQuery({
         query: AssetsQuery,
     });
+    const [, deleteAssetMut] = useMutation(DeleteAssetMutation);
 
     const {data} = result;
 
     return (
         <>
-            <AddAsset></AddAsset>
+            <AddAsset
+                onAdded={() => {
+                    reexecuteQuery({ requestPolicy: 'network-only' }); }
+            }/>
 
             <Table variant={'striped'}>
-                <TableCaption></TableCaption>
+                <TableCaption/>
                 <Thead>
                     <Tr>
                         <Th>Name</Th>
@@ -40,9 +51,16 @@ export function ListAsset() {
                             <Td>{asset.name}</Td>
                             <Td>{asset.quantity}</Td>
                             <Td>{asset.type}</Td>
-                            <Td>{asset.createdAt}</Td>
+                            <Td>{formatToAwst(asset.createdAt)}</Td>
                             <Td>
-                                <Button colorScheme={'red'}>Delete</Button>
+                                <Button
+                                    colorScheme={'red'}
+                                    onClick={ async () => {
+                                        await deleteAssetMut( {id: parseInt(asset.id)});
+                                    }}
+                                >
+                                    Delete
+                                </Button>
                             </Td>
                         </Tr>
                     ))}
