@@ -9,7 +9,11 @@
   * This should start both `client` & `server`
   * `client` at http://localhost:3000
   * `server` at http://localhost:4000/graphql
+    * nodejs express-graphql with SQLite persistence (Sequelize ORM)
+    * graphql is used for client <-> server communication 
 * Browse to http://localhost:3000
+
+## Architecture
 
 ![asset-register.gif](asset-register.gif)
 
