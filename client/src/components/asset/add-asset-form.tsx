@@ -5,14 +5,15 @@ import {useMutation} from "urql";
 import {useForm} from "react-hook-form";
 import {AddAssetMutation} from "./query-mutation";
 
-export function AddAssetForm() {
+
+export function AddAssetForm(props: any) {
     const [, addAssetMut] = useMutation(AddAssetMutation);
 
     const {
         register
         , handleSubmit
         , formState: { errors, isSubmitting }
-        , resetField
+        , reset
     } = useForm();
 
     const onSubmit = (data: any) => {
@@ -20,10 +21,15 @@ export function AddAssetForm() {
         const newAsset = { ...data };
         newAsset.quantity = parseInt(newAsset.quantity);
         addAssetMut(newAsset)
-        .then((res) => {
-                resetField('title');
-                //reexecute();
+        .finally(() => {
+                reset();
+                props.onSaved();
             });
+    }
+
+    const onCancel = () => {
+        reset();
+        props.onCancel();
     }
 
     return (
@@ -66,8 +72,16 @@ export function AddAssetForm() {
                 </FormErrorMessage>
             </FormControl>
 
-            <Button mt={4} colorScheme={'teal'} isLoading={isSubmitting} type={'submit'}>
-                Submit
+            <Button mt={4}
+                    colorScheme={'green'}
+                    isLoading={isSubmitting}
+                    type={'submit'}
+            >
+                Save
+            </Button>
+
+            <Button mt={4} onClick={onCancel}>
+                Cancel
             </Button>
         </form>
     );
