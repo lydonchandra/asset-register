@@ -3,6 +3,7 @@
 ## How to run
 * Install yarn v1.22.18
   * https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable
+* Run `cd asset-register`
 * Run `yarn install`
 * Run `yarn start`
   * This should start both `client` & `server`
